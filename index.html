@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Helping Writers</title>
+</head>
+<body>
+<div class="title">Sentence Converter</div>
+<textarea></textarea>
+<div>
+<button id="upper-case">Upper Case</button>
+<button id="lower-case">Lower Case</button>
+<button id="proper-case">Proper Case</button>
+<button id="sentence-case">Sentence Case</button>
+<button id="save-text-file">Save Text File</button>
+</div>
+<script>
+    let text = document.querySelector("textarea");
+    let btnUpperCase = document.getElementById("upper-case");
+    let btnLowerCase = document.getElementById("lower-case");
+    let btnProperCase = document.getElementById("proper-case");
+    let btnSentenceCase = document.getElementById("sentence-case");
+    let btnSaveTextFile = document.getElementById("save-text-file");
+
+    btnUpperCase.addEventListener("click", function () {
+        let str = text.value.toUpperCase();
+        text.value =  str;
+    });
+    btnLowerCase.addEventListener("click", function (){
+        let str = text.value.toLowerCase();
+        text.value =  str;
+    });
+    btnProperCase.addEventListener("click", function (){
+        let str = text.value.split(" ").map(toProperCase).join(" ");
+        function toProperCase(value){
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        };
+        text.value =  str;
+    });
+
+    btnSentenceCase.addEventListener("click", function (){
+        let str = text.value.split(". ").map((item) => {
+            return item.charAt(0).toUpperCase() + item.slice(1).toLowerCase();
+        }).join(". ");
+        text.value = str;
+    });
+
+    btnSaveTextFile.addEventListener("click", function download (filename, entertext){
+        entertext = text.value;
+        filename = "text.txt"
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(entertext));
+        element.setAttribute('download', filename);
+
+        element.style.display = "none";
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    });
+</script>
+</body>
+</html>
